@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black_30">#33000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="white_30">#33FFFFFF</color>
+
+    <color name="nowPlayingBar_background">#252525</color>
+
+</resources>
+
