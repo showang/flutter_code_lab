@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
-    <CLASSES />
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-0a49afdb5dc980a1e32b8510d90e548e2755faed" />
+    </CLASSES>
     <JAVADOC />
     <SOURCES />
   </library>

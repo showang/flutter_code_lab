@@ -65,26 +65,26 @@ ext {
 
 dependencies {
 
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.android.support:preference-v7:$supportLibraryVersion"
-    implementation "com.android.support:support-media-compat:$supportLibraryVersion"
+//    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+//    implementation "com.android.support:preference-v7:$supportLibraryVersion"
+//    implementation "com.android.support:support-media-compat:$supportLibraryVersion"
 
-    //KKBOX open api
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation project(':kkbox_open_api')
-
-    // YouTube Player
-    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
-    implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
-    implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
-
-    // Spotify Player
-    implementation 'com.spotify.android:auth:1.1.0'
-    implementation 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
-
-    // Image Loader
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
-    kapt 'com.github.bumptech.glide:compiler:4.6.1'
+//    //KKBOX open api
+//    implementation 'com.google.code.gson:gson:2.8.2'
+//    implementation project(':kkbox_open_api')
+//
+//    // YouTube Player
+//    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+//    implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
+//    implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
+//
+//    // Spotify Player
+//    implementation 'com.spotify.android:auth:1.1.0'
+//    implementation 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
+//
+//    // Image Loader
+//    implementation 'com.github.bumptech.glide:glide:4.6.1'
+//    kapt 'com.github.bumptech.glide:compiler:4.6.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "org.jetbrains.anko:anko-commons:$anko_version"

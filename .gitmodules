@@ -1,3 +1,3 @@
-[submodule "android/KKBOXOpenApi-Android"]
-	path = android/KKBOXOpenApi-Android
-	url = git@github.com:KKBOX-XDDD/KKBOXOpenApi-Android.git
+[submodule "OpenAPI-Dart"]
+	path = OpenAPI-Dart
+	url = https://gitlab.kkinternal.com/xddd/OpenAPI-Dart

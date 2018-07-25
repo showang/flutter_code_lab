@@ -35,7 +35,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.7"
+    version: "0.12.7+2"
   build_config:
     dependency: transitive
     description:
@@ -189,10 +189,19 @@ packages:
   kkbox_openapi:
     dependency: "direct main"
     description:
-      name: kkbox_openapi
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.4"
+      path: OpenAPI-Dart
+      relative: true
+    source: path
+    version: "0.9.1"
+  kube_player_plugin:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "0a49afdb5dc980a1e32b8510d90e548e2755faed"
+      url: "git@github.com:KKBOX-XDDD/kube_player_plugin.git"
+    source: git
+    version: "0.0.1"
   logging:
     dependency: transitive
     description:
@@ -323,7 +332,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.3"
+    version: "0.8.3+1"
   source_map_stack_trace:
     dependency: transitive
     description:

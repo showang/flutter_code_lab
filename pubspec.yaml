@@ -4,12 +4,15 @@ description: A new Flutter application.
 dependencies:
   flutter:
     sdk: flutter
-  kkbox_openapi: ^0.9.4
+  kkbox_openapi:
+    path: OpenAPI-Dart
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   json_annotation: ^0.2.3
   easy_listview: ^0.0.1
+  kube_player_plugin:
+    git: git@github.com:KKBOX-XDDD/kube_player_plugin.git
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_kube/Channels.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:easy_listview/easy_listview.dart';
+import 'package:kube_player_plugin/kube_player_plugin.dart';
 
 class DiscoverDetailPage extends StatefulWidget {
   DiscoverDetailPage(this.api, {this.playlistInfo, this.heroTag});
@@ -77,12 +78,17 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
             width: 60.0,
           ),
           onTap: () {
-            Map<String, dynamic> argumentMap = Map();
-            argumentMap["info"] = json.encode(widget.playlistInfo.jsonObject);
-            argumentMap["position"] = index;
-            Channels.methodChannel
-                .invokeMethod('startPlay', argumentMap)
-                .then((success) {});
+//            Map<String, dynamic> argumentMap = Map();
+//            argumentMap["info"] = json.encode(widget.playlistInfo.apiJsonObject);
+//            argumentMap["position"] = index;
+//            Channels.methodChannel
+//                .invokeMethod('startPlay', argumentMap)
+//                .then((success) {});
+            KubePlayerPlugin
+                .startPlay(widget.playlistInfo.id, index)
+                .then((success) {
+              KubePlayerPlugin.openNowPlaying();
+            });
           },
         );
       },
@@ -112,12 +118,18 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
                   size: 32.0,
                 ),
                 onPressed: () async {
-                  Map<String, dynamic> argumentMap = Map();
-                  argumentMap["info"] =
-                      json.encode(widget.playlistInfo.jsonObject);
-                  argumentMap["position"] = 0;
-                  await Channels.methodChannel
-                      .invokeMethod('startPlay', argumentMap);
+//                  Map<String, dynamic> argumentMap = Map();
+//                  argumentMap["info"] =
+//                      json.encode(widget.playlistInfo.apiJsonObject);
+//                  argumentMap["position"] = 0;
+//                  await Channels.methodChannel
+//                      .invokeMethod('startPlay', argumentMap);
+
+                  KubePlayerPlugin
+                      .startPlay(widget.playlistInfo.id)
+                      .then((success) {
+                    KubePlayerPlugin.openNowPlaying();
+                  });
                 })
           ],
         ),
@@ -142,4 +154,6 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
       ]);
     };
   }
+
+  startPlayingMusic() {}
 }

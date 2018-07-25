@@ -38,8 +38,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.kubeapp.kubeplayerplugin.nowplaying.NowPlayingActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <service
-            android:name=".service.KubeService"
+            android:name="com.kubeapp.kubeplayerplugin.service.KubeService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
