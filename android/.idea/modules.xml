@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/KKBOXOpenApi-Android/kkbox_open_api/kkbox_open_api.iml" filepath="$PROJECT_DIR$/KKBOXOpenApi-Android/kkbox_open_api/kkbox_open_api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-a2657899ef7d36a4d1eed4d59ab13ef9c3deb207/android/kube_player_plugin.iml" filepath="$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-a2657899ef7d36a4d1eed4d59ab13ef9c3deb207/android/kube_player_plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-7f24771913df397c20989997aac26a64b16f1f22/android/kube_player_plugin.iml" filepath="$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-7f24771913df397c20989997aac26a64b16f1f22/android/kube_player_plugin.iml" />
     </modules>
   </component>
 </project>

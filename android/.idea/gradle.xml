@@ -10,7 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/KKBOXOpenApi-Android/kkbox_open_api" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-a2657899ef7d36a4d1eed4d59ab13ef9c3deb207/android" />
+            <option value="$PROJECT_DIR$/../../../libs/flutter/.pub-cache/git/kube_player_plugin-7f24771913df397c20989997aac26a64b16f1f22/android" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

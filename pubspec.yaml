@@ -10,7 +10,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   json_annotation: ^0.2.3
-  easy_listview: ^0.0.1
+  easy_listview: ^0.0.2
   kube_player_plugin:
     git: git@github.com:KKBOX-XDDD/kube_player_plugin.git
 

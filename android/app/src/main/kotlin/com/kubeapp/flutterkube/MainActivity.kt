@@ -7,6 +7,11 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.engine.cache.LruResourceCache
+import com.bumptech.glide.load.engine.cache.MemorySizeCalculator
+import com.bumptech.glide.module.AppGlideModule
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
@@ -31,7 +36,6 @@ class MainActivity : FlutterActivity(), ServiceConnection {
 //        KKBOXOpenApi.fetchAuthToken { }
 //        bindService(Intent(this, KubeService::class.java), this, Context.BIND_AUTO_CREATE)
         GeneratedPluginRegistrant.registerWith(this)
-
         EventChannel(flutterView, CHANNEL_PLAYER_EVENT).setStreamHandler(object : EventChannel.StreamHandler {
             override fun onListen(p0: Any?, p1: EventChannel.EventSink?) {
 
@@ -87,5 +91,15 @@ class MainActivity : FlutterActivity(), ServiceConnection {
 //        if (kubeService.player?.isStop == false && kubeService.currentPlaylist != null) {
 //            onStartPlay(kubeService.currentPlaylist!!)
 //        }
+    }
+}
+
+@GlideModule
+class MyAppGlideModule : AppGlideModule() {
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
+        val calculator = MemorySizeCalculator.Builder(context)
+                .setMemoryCacheScreens(2f)
+                .build()
+        builder.setMemoryCache(LruResourceCache(calculator.memoryCacheSize.toLong()))
     }
 }

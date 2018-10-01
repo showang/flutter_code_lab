@@ -78,17 +78,10 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
             width: 60.0,
           ),
           onTap: () {
-//            Map<String, dynamic> argumentMap = Map();
-//            argumentMap["info"] = json.encode(widget.playlistInfo.apiJsonObject);
-//            argumentMap["position"] = index;
-//            Channels.methodChannel
-//                .invokeMethod('startPlay', argumentMap)
-//                .then((success) {});
+            print("event tap on item $index");
             KubePlayerPlugin
                 .startPlay(widget.playlistInfo.id, index)
-                .then((success) {
-              KubePlayerPlugin.openNowPlaying();
-            });
+                .then((success) {});
           },
         );
       },
@@ -118,18 +111,9 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
                   size: 32.0,
                 ),
                 onPressed: () async {
-//                  Map<String, dynamic> argumentMap = Map();
-//                  argumentMap["info"] =
-//                      json.encode(widget.playlistInfo.apiJsonObject);
-//                  argumentMap["position"] = 0;
-//                  await Channels.methodChannel
-//                      .invokeMethod('startPlay', argumentMap);
-
                   KubePlayerPlugin
                       .startPlay(widget.playlistInfo.id)
-                      .then((success) {
-                    KubePlayerPlugin.openNowPlaying();
-                  });
+                      .then((success) {});
                 })
           ],
         ),
@@ -145,7 +129,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
           ),
         ),
         new Text(
-          "Create by: ${widget.playlistInfo.owner.name}",
+          "Created by: ${widget.playlistInfo.owner.name}",
           textAlign: TextAlign.start,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

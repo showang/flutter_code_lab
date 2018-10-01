@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,40 +61,49 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Widget buildList(List<KK.PlaylistInfo> playlistInfoList) {
-    return new ListView.builder(
-      controller: scrollController,
-      itemCount: playlistInfoList.length * 2,
-      itemBuilder: (BuildContext context, int index) {
-        if (index.isOdd)
-          return const Divider(
-            height: 1.0,
-            color: Colors.black12,
-          );
-
-        int itemIndex = index ~/ 2;
-        var playlistInfo = playlistInfoList[itemIndex];
-        return new ListTile(
-          leading: Hero(
-            tag: "item avatar$itemIndex",
-            child: Image.network(
-              playlistInfoList[itemIndex].images[1].url,
-              fit: BoxFit.cover,
-              width: 60.0,
-            ),
-          ),
-          title: new Text(playlistInfo.title),
-          subtitle: new Text(playlistInfo.owner.name),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-          onTap: () {
-            var page = DiscoverDetailPage(widget.api,
-                playlistInfo: playlistInfo, heroTag: "item avatar$itemIndex");
-
-            Navigator.push(context, CupertinoPageRoute(builder: (_) {
-              return page;
-            }));
-          },
-        );
+    return RefreshIndicator(
+      onRefresh: () {
+        new Timer(const Duration(milliseconds: 3000), () {
+          setState(() {
+            //TODO Refresh
+          });
+        });
       },
+      child: ListView.builder(
+        controller: scrollController,
+        itemCount: playlistInfoList.length * 2,
+        itemBuilder: (BuildContext context, int index) {
+          if (index.isOdd)
+            return const Divider(
+              height: 1.0,
+              color: Colors.black12,
+            );
+
+          int itemIndex = index ~/ 2;
+          var playlistInfo = playlistInfoList[itemIndex];
+          return new ListTile(
+            leading: Hero(
+              tag: "item avatar$itemIndex",
+              child: Image.network(
+                playlistInfoList[itemIndex].images[1].url,
+                fit: BoxFit.cover,
+                width: 60.0,
+              ),
+            ),
+            title: new Text(playlistInfo.title),
+            subtitle: new Text(playlistInfo.owner.name),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            onTap: () {
+              var page = DiscoverDetailPage(widget.api,
+                  playlistInfo: playlistInfo, heroTag: "item avatar$itemIndex");
+
+              Navigator.push(context, CupertinoPageRoute(builder: (_) {
+                return page;
+              }));
+            },
+          );
+        },
+      ),
     );
   }
 }
