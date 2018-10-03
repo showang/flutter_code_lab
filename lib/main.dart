@@ -19,12 +19,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("open api: $openApi");
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
+        backgroundColor: Colors.white,
         primarySwatch: Colors.pink,
       ),
-      home: new MyHomePage(openApi, title: 'Flutter Demo Home Page'),
+      home: MyHomePage(openApi, title: 'Flutter Demo Home Page'),
     );
   }
 }

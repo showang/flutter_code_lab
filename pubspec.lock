@@ -172,7 +172,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: b0913098a4d38cd82d16dee0f7f42ef0a93b5899
+      resolved-ref: "0ac7c360df6ea8e2cfd149b508fcf2a76e99864b"
       url: "git@github.com:KKBOX-XDDD/kube_player_plugin.git"
     source: git
     version: "0.0.1"

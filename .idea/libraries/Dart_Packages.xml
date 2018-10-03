@@ -185,7 +185,7 @@
         <entry key="kube_player_plugin">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-b0913098a4d38cd82d16dee0f7f42ef0a93b5899/lib" />
+              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-0ac7c360df6ea8e2cfd149b508fcf2a76e99864b/lib" />
             </list>
           </value>
         </entry>
@@ -510,7 +510,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-1.0.9/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/yaml-2.1.15/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/flutter_easy_listview-330e15f44a52fbef52d7b4f457ce1cf3c17dd037/lib" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-b0913098a4d38cd82d16dee0f7f42ef0a93b5899/lib" />
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-0ac7c360df6ea8e2cfd149b508fcf2a76e99864b/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.33.0-alpha.0/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/args-1.5.0/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.0.8/lib" />
