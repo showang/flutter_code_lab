@@ -12,6 +12,9 @@
       <excludeFolder url="file://$MODULE_DIR$/OpenAPI-Dart/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/OpenAPI-Dart/build" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/easy_listview/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/easy_listview/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/easy_listview/build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />

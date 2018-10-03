@@ -1,109 +1,233 @@
-import 'dart:async';
-
+import 'package:easy_listview/easy_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_kube/DiscoverDetailPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
+import 'package:kube_player_plugin/kube_player_plugin.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DiscoverPage extends StatefulWidget {
   DiscoverPage(this.api, {Key key}) : super(key: key);
 
   final String title = "Discover";
   final KK.KKBOXOpenAPI api;
-  final List<KK.PlaylistInfo> playlistInfoList = [];
 
   @override
   _DiscoverPageState createState() => new _DiscoverPageState();
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
-  ScrollController scrollController =
-      new ScrollController(keepScrollOffset: true);
+  List<KK.PlaylistInfo> playlistInfoList = [];
+  var scrollController = ScrollController();
+  var appBarBuilder = (BuildContext context, bool innerBoxIsScrolled) => [
+        SliverAppBar(
+          expandedHeight: 120.0,
+          pinned: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Container(
+              child: Text(
+                "Today",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          "Discover",
-          style: new TextStyle(color: Colors.black),
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: appBarBuilder,
+        body: Container(
+          child: bodyWidget(),
+          alignment: AlignmentDirectional.center,
         ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
       ),
-      body: new Container(child: bodyWidget()),
     );
   }
 
   Widget bodyWidget() {
-    if (widget.playlistInfoList.length == 0) {
-      return new FutureBuilder<KK.PlaylistList>(
+    if (playlistInfoList.length == 0) {
+      return FutureBuilder<KK.PlaylistList>(
         future: widget.api.fetchFeaturedPlaylists(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return new Text("");
+              return Text("");
             case ConnectionState.waiting:
-              return new Text("Loading...");
+              return const Text("Loading...");
             default:
               if (snapshot.hasError)
-                return new Text('Error: ${snapshot.error}');
+                return Text('Error: ${snapshot.error}');
               else
-                widget.playlistInfoList.addAll(snapshot.data.playlists);
-              return buildList(widget.playlistInfoList);
+                playlistInfoList.addAll(snapshot.data.playlists);
+              return buildList(playlistInfoList);
           }
         },
       );
     } else {
-      return buildList(widget.playlistInfoList);
+      return buildList(playlistInfoList);
     }
   }
 
   Widget buildList(List<KK.PlaylistInfo> playlistInfoList) {
-    return RefreshIndicator(
-      onRefresh: () {
-        new Timer(const Duration(milliseconds: 3000), () {
-          setState(() {
-            //TODO Refresh
-          });
-        });
-      },
-      child: ListView.builder(
-        controller: scrollController,
-        itemCount: playlistInfoList.length * 2,
-        itemBuilder: (BuildContext context, int index) {
-          if (index.isOdd)
-            return const Divider(
-              height: 1.0,
-              color: Colors.black12,
-            );
-
-          int itemIndex = index ~/ 2;
-          var playlistInfo = playlistInfoList[itemIndex];
-          return new ListTile(
-            leading: Hero(
-              tag: "item avatar$itemIndex",
-              child: Image.network(
-                playlistInfoList[itemIndex].images[1].url,
-                fit: BoxFit.cover,
-                width: 60.0,
+    var listItemBuilder = (BuildContext context, int index) {
+      var playlistInfo = playlistInfoList[index];
+      var screenWidth = MediaQuery.of(context).size.width;
+      var heroTag = "item avatar$index";
+      var navigationDuration =
+          CupertinoPageRoute(builder: (_) {}).transitionDuration;
+      return GestureDetector(
+        onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) {
+              return DiscoverDetailPage(
+                widget.api,
+                playlistInfo: playlistInfo,
+                heroTag: heroTag,
+                navigationDuration: navigationDuration,
+              );
+            })),
+        child: Column(
+          children: [
+            new CoverWithPlayButtonWidget(
+              screenWidth: screenWidth,
+              heroTag: heroTag,
+              playlistInfo: playlistInfo,
+            ),
+            Container(
+              alignment: AlignmentDirectional.topStart,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 4.0, 80.0, 0.0),
+                child: Text(
+                  playlistInfo.title,
+                  style: TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
-            title: new Text(playlistInfo.title),
-            subtitle: new Text(playlistInfo.owner.name),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-            onTap: () {
-              var page = DiscoverDetailPage(widget.api,
-                  playlistInfo: playlistInfo, heroTag: "item avatar$itemIndex");
+            Container(
+              alignment: AlignmentDirectional.topStart,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Row(
+                  children: [
+                    Text(
+                      "作者: ",
+                      style: TextStyle(fontSize: 18.0, color: Colors.black87),
+                    ),
+                    Text(
+                      playlistInfo.owner.name,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black87,
+                          decoration: TextDecoration.underline),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              alignment: AlignmentDirectional.topStart,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Text(
+                  playlistInfo.description,
+                  style: TextStyle(fontSize: 14.0, color: Colors.black87),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              ),
+            ),
+            Container(
+              alignment: AlignmentDirectional.topStart,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
+                child: Text(
+                  playlistInfo.lastUpdateDate,
+                  style: TextStyle(fontSize: 14.0, color: Colors.black45),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    };
 
-              Navigator.push(context, CupertinoPageRoute(builder: (_) {
-                return page;
-              }));
-            },
-          );
-        },
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: EasyListView(
+        itemCount: playlistInfoList.length,
+        dividerSize: 1.0,
+        itemBuilder: listItemBuilder,
+        physics: BouncingScrollPhysics(),
       ),
+    );
+  }
+}
+
+class CoverWithPlayButtonWidget extends StatelessWidget {
+  const CoverWithPlayButtonWidget({
+    Key key,
+    @required this.screenWidth,
+    @required this.heroTag,
+    @required this.playlistInfo,
+    this.playButtonSize = 54.0,
+  }) : super(key: key);
+
+  final double screenWidth;
+  final String heroTag;
+  final double playButtonSize;
+  final KK.PlaylistInfo playlistInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment:
+          Alignment(0.9, 1.0 + 1.0 / (screenWidth / playButtonSize) + 0.015),
+      children: [
+        Container(
+          width: screenWidth,
+          height: screenWidth,
+          child: Stack(
+            children: [
+              Container(color: Colors.black26),
+              Hero(
+                tag: heroTag,
+                child: FadeInImage.memoryNetwork(
+                  fadeInDuration: Duration(milliseconds: 200),
+                  placeholder: kTransparentImage,
+                  image: playlistInfo.images[2].url,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          child: ButtonTheme(
+            height: playButtonSize,
+            minWidth: playButtonSize,
+            child: RaisedButton(
+              color: Colors.pinkAccent,
+              onPressed: () => KubePlayerPlugin.startPlay(playlistInfo.id)
+                  .then((success) {}),
+              padding: EdgeInsets.all(0.0),
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 36.0,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

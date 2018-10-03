@@ -36,15 +36,15 @@ class MyHomePage extends StatefulWidget {
   final KK.KKBOXOpenAPI api;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState(api);
+  MyHomePageState createState() => MyHomePageState(api);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   final List<BottomNavigationBarItem> tabItems = [
     new BottomNavigationBarItem(
         icon: new Icon(Icons.whatshot), title: new Text("Today")),
     new BottomNavigationBarItem(
-        icon: new Icon(Icons.library_music), title: new Text("Playlist"))
+        icon: new Icon(Icons.library_music), title: new Text("歌單"))
   ];
 
   final nowPlayingHeight = 52.0;
@@ -56,11 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //  final _insideScaffoldKey = new GlobalKey<ScaffoldState>();
 
-  _MyHomePageState(this.api);
+  MyHomePageState(this.api);
 
   PersistentBottomSheetController bottomSheetController;
 
-  Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
+  static Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.discover: GlobalKey<NavigatorState>(),
     TabItem.category: GlobalKey<NavigatorState>(),
   };
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return DiscoverPage(api);
       case TabItem.category:
       default:
-        return CategoryPage();
+        return CategoryPage(api);
     }
   }
 
