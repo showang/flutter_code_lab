@@ -74,12 +74,10 @@ packages:
   easy_listview:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "330e15f44a52fbef52d7b4f457ce1cf3c17dd037"
-      url: "git@github.com:showang/flutter_easy_listview.git"
-    source: git
-    version: "0.0.3"
+      name: easy_listview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -267,6 +265,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+1"
+  share:
+    dependency: "direct main"
+    description:
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3"
   shelf:
     dependency: transitive
     description:
@@ -370,6 +375,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   utf:
     dependency: transitive
     description:
@@ -414,3 +426,4 @@ packages:
     version: "2.1.15"
 sdks:
   dart: ">=2.0.0 <3.0.0"
+  flutter: ">=0.5.6 <2.0.0"

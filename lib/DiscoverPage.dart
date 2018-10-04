@@ -38,17 +38,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
       ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: appBarBuilder,
-        body: Container(
-          child: bodyWidget(),
-          alignment: AlignmentDirectional.center,
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => bodyWidget();
 
   Widget bodyWidget() {
     if (playlistInfoList.length == 0) {
@@ -57,21 +47,34 @@ class _DiscoverPageState extends State<DiscoverPage> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return Text("");
+              return tempLayout(const Text(""));
             case ConnectionState.waiting:
-              return const Text("Loading...");
+              return tempLayout(const Text("Loading..."));
             default:
-              if (snapshot.hasError)
-                return Text('Error: ${snapshot.error}');
-              else
+              if (snapshot.hasError) {
+                return tempLayout(Text('Error: ${snapshot.error}'));
+              } else {
                 playlistInfoList.addAll(snapshot.data.playlists);
-              return buildList(playlistInfoList);
+              }
           }
+          return buildList(playlistInfoList);
         },
       );
     } else {
       return buildList(playlistInfoList);
     }
+  }
+
+  tempLayout(Widget child) {
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: appBarBuilder,
+        body: Container(
+          alignment: AlignmentDirectional.center,
+          child: child,
+        ),
+      ),
+    );
   }
 
   Widget buildList(List<KK.PlaylistInfo> playlistInfoList) {
@@ -92,7 +95,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             })),
         child: Column(
           children: [
-            new CoverWithPlayButtonWidget(
+            CoverWithPlayButtonWidget(
               screenWidth: screenWidth,
               heroTag: heroTag,
               playlistInfo: playlistInfo,
@@ -159,14 +162,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
       );
     };
 
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: EasyListView(
+    return Scaffold(
+      body: EasyListView(
         itemCount: playlistInfoList.length,
-        dividerSize: 1.0,
+        headerSliverBuilder: appBarBuilder,
         itemBuilder: listItemBuilder,
-        physics: BouncingScrollPhysics(),
+        dividerSize: 1.0,
       ),
     );
   }

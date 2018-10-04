@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:easy_listview/easy_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +5,8 @@ import 'package:flutter_kube/DiscoverPage.dart';
 import 'package:flutter_kube/tools/DataAfterRoutingController.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:kube_player_plugin/kube_player_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 class DiscoverDetailPage extends StatefulWidget {
   DiscoverDetailPage(this.api,
@@ -21,6 +21,8 @@ class DiscoverDetailPage extends StatefulWidget {
   State<StatefulWidget> createState() => new DiscoverDetailState(heroTag);
 }
 
+enum TrackOptions { openInKkbox, playTrack }
+
 class DiscoverDetailState extends State<DiscoverDetailPage> {
   DiscoverDetailState(this.heroTag);
 
@@ -30,6 +32,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   List<KK.TrackInfo> tracks = [];
 
   KK.TrackList tempTrackData;
+  var expandDesc = false;
 
   @override
   void initState() {
@@ -48,12 +51,19 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildTrackList(tracks),
+      body: EasyListView(
+        itemCount: tracks.length,
+        itemBuilder: _itemBuilder,
+        headerBuilder: _headerViewBuilder,
+        loadMore: hasNextPage,
+        onLoadMore: () => requestPageData(nextOffset),
+        loadMoreWhenNoData: true,
+        dividerSize: 1.0,
+      ),
     );
   }
 
   void requestPageData(int offset) {
-    print("request offset: $offset");
     widget.api
         .fetchTracksInPlaylist(widget.playlistInfo.id, offset: offset)
         .then(_updateTrackList);
@@ -86,84 +96,144 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
     );
   }
 
-  Widget buildTrackList(List<KK.TrackInfo> tracks) {
-    return EasyListView(
-      itemCount: tracks.length,
-      itemBuilder: (context, index) {
-        var track = tracks[index];
-        return new ListTile(
-          title: new Text(track.name),
-          subtitle: new Text(track.album.artist.name),
-          leading: Image.network(
-            track.album.images[0].url,
-            fit: BoxFit.cover,
-            width: 60.0,
-          ),
-          onTap: () {
-            print("event tap on item $index");
-            KubePlayerPlugin.startPlay(widget.playlistInfo.id, index)
-                .then((success) {});
-          },
-        );
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    var track = tracks[index];
+    return ListTile(
+      contentPadding: EdgeInsets.only(left: 8.0, right: 8.0),
+      title: Text(track.name),
+      subtitle: Text(track.album.artist.name),
+      leading: Image.network(
+        track.album.images[0].url,
+        fit: BoxFit.cover,
+        width: 60.0,
+      ),
+      trailing: PopupMenuButton<TrackOptions>(
+        icon: Icon(Icons.more_vert),
+        onSelected: (TrackOptions result) {
+          switch (result) {
+            case TrackOptions.playTrack:
+              KubePlayerPlugin.startPlay(widget.playlistInfo.id, index);
+              break;
+            case TrackOptions.openInKkbox:
+              _launchURL(tracks[index].url);
+              break;
+          }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<TrackOptions>>[
+              const PopupMenuItem<TrackOptions>(
+                value: TrackOptions.playTrack,
+                child: const Text('Play track'),
+              ),
+              const PopupMenuItem<TrackOptions>(
+                value: TrackOptions.openInKkbox,
+                child: const Text('Open in KKBOX'),
+              ),
+            ],
+      ),
+      onTap: () {
+        print("event tap on item $index");
+        KubePlayerPlugin.startPlay(widget.playlistInfo.id, index)
+            .then((success) {});
       },
-      headerBuilder: _headerViewBuilder(),
-      loadMore: hasNextPage,
-      onLoadMore: () {
-        print("onLoadMore");
-        requestPageData(nextOffset);
-      },
-      dividerSize: 2.0,
     );
   }
 
-  WidgetBuilder _headerViewBuilder() {
+  Widget _headerViewBuilder(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
-    return (context) {
-      return new Column(children: <Widget>[
-//        new Stack(
-//          alignment: new Alignment(0.9, 1.1),
-//          children: <Widget>[
-//            buildCoverImage(),
-//            new MaterialButton(
-//                height: 52.0,
-//                minWidth: 48.0,
-//                color: Colors.pinkAccent,
-//                child: new Icon(
-//                  Icons.play_arrow,
-//                  color: Colors.white,
-//                  size: 32.0,
-//                ),
-//                onPressed: () async {
-//                  KubePlayerPlugin.startPlay(widget.playlistInfo.id)
-//                      .then((success) {});
-//                })
-//          ],
-//        ),
-        CoverWithPlayButtonWidget(
-          screenWidth: screenWidth,
-          heroTag: heroTag,
-          playlistInfo: widget.playlistInfo,
+    var playlist = widget.playlistInfo;
+    return Column(children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 12.0),
+        alignment: AlignmentDirectional.topStart,
+        child: Stack(
+          alignment: Alignment(1.0, 1.0),
+          children: [
+            Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                      left: 0.0, top: 0.0, right: 0.0, bottom: 4.0),
+                  alignment: AlignmentDirectional.topStart,
+                  child: Text(
+                    playlist.title,
+                    style:
+                        TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      "作者：",
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    Text(playlist.owner.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          decoration: TextDecoration.underline,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+            Container(
+              alignment: AlignmentDirectional.topEnd,
+              child: IconButton(
+                onPressed: () =>
+                    Share.share("https://kube-app.com/playlist/${playlist.id}"),
+                icon: Icon(
+                  Icons.share,
+                  size: 40.0,
+                ),
+                color: Colors.black45,
+              ),
+            ),
+          ],
         ),
-        new Container(
-          padding:
-              EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 0.0),
-          child: new Text(
-            widget.playlistInfo.title,
-            style: new TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.start,
+      ),
+      CoverWithPlayButtonWidget(
+        screenWidth: screenWidth,
+        heroTag: heroTag,
+        playlistInfo: widget.playlistInfo,
+      ),
+      Container(
+        padding:
+            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 0.0),
+        alignment: AlignmentDirectional.topStart,
+        child: Text(
+          "更新時間：${widget.playlistInfo.lastUpdateDate}",
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.black45,
           ),
         ),
-        new Text(
-          "Created by: ${widget.playlistInfo.owner.name}",
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: new TextStyle(fontSize: 24.0),
+      ),
+      Container(
+        padding:
+            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+        alignment: AlignmentDirectional.topStart,
+        child: GestureDetector(
+          onTap: () => setState(() => expandDesc = !expandDesc),
+          child: Text(
+            widget.playlistInfo.description,
+            maxLines: expandDesc ? 20 : 5,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+          ),
         ),
-      ]);
-    };
+      ),
+    ]);
   }
 
   startPlayingMusic() {}
