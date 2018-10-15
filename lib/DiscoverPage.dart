@@ -10,15 +10,21 @@ import 'package:transparent_image/transparent_image.dart';
 class DiscoverPage extends StatefulWidget {
   DiscoverPage(this.api, {Key key}) : super(key: key);
 
-  final String title = "Discover";
   final KK.KKBOXOpenAPI api;
+  final GlobalKey<ScaffoldState> discoverScaffoldKey =
+      GlobalKey<ScaffoldState>();
 
   @override
-  _DiscoverPageState createState() => new _DiscoverPageState();
+  _DiscoverPageState createState() => _DiscoverPageState();
+
+  static String title() => _DiscoverPageState.title;
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
+  _DiscoverPageState();
+
   List<KK.PlaylistInfo> playlistInfoList = [];
+  static String title = "今日精選";
   var scrollController = ScrollController();
   var appBarBuilder = (BuildContext context, bool innerBoxIsScrolled) => [
         SliverAppBar(
@@ -29,7 +35,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           flexibleSpace: FlexibleSpaceBar(
             title: Container(
               child: Text(
-                "Today",
+                title,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -38,46 +44,37 @@ class _DiscoverPageState extends State<DiscoverPage> {
       ];
 
   @override
-  Widget build(BuildContext context) => bodyWidget();
+  Widget build(BuildContext context) => playlistInfoList.length == 0
+      ? loadingFutureBuilder()
+      : buildList(playlistInfoList);
 
-  Widget bodyWidget() {
-    if (playlistInfoList.length == 0) {
-      return FutureBuilder<KK.PlaylistList>(
+  loadingFutureBuilder() => FutureBuilder<KK.PlaylistList>(
         future: widget.api.fetchFeaturedPlaylists(),
         builder: (context, snapshot) {
+          Widget foreground;
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return tempLayout(const Text(""));
+              foreground = tempLayout(const Text(""));
+              break;
             case ConnectionState.waiting:
-              return tempLayout(const Text("Loading..."));
+              foreground = tempLayout(const Text("Loading..."));
+              break;
             default:
               if (snapshot.hasError) {
-                return tempLayout(Text('Error: ${snapshot.error}'));
+                foreground = tempLayout(Text('Error: ${snapshot.error}'));
               } else {
                 playlistInfoList.addAll(snapshot.data.playlists);
               }
           }
-          return buildList(playlistInfoList);
+          return buildList(playlistInfoList, foreground);
         },
       );
-    } else {
-      return buildList(playlistInfoList);
-    }
-  }
 
-  tempLayout(Widget child) {
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: appBarBuilder,
-        body: Container(
-          alignment: AlignmentDirectional.center,
-          child: child,
-        ),
-      ),
-    );
-  }
+  tempLayout(Widget child) =>
+      Container(alignment: AlignmentDirectional.center, child: child);
 
-  Widget buildList(List<KK.PlaylistInfo> playlistInfoList) {
+  Widget buildList(List<KK.PlaylistInfo> playlistInfoList,
+      [Widget foreground]) {
     var listItemBuilder = (BuildContext context, int index) {
       var playlistInfo = playlistInfoList[index];
       var screenWidth = MediaQuery.of(context).size.width;
@@ -121,11 +118,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   children: [
                     Text(
                       "作者: ",
-                      style: TextStyle(fontSize: 18.0, color: Colors.black87),
+                      style: const TextStyle(
+                          fontSize: 18.0, color: Colors.black87),
                     ),
                     Text(
                       playlistInfo.owner.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 18.0,
                           color: Colors.black87,
                           decoration: TextDecoration.underline),
@@ -140,7 +138,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Text(
                   playlistInfo.description,
-                  style: TextStyle(fontSize: 14.0, color: Colors.black87),
+                  style: const TextStyle(fontSize: 14.0, color: Colors.black87),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                 ),
@@ -153,7 +151,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
                 child: Text(
                   playlistInfo.lastUpdateDate,
-                  style: TextStyle(fontSize: 14.0, color: Colors.black45),
+                  style: const TextStyle(fontSize: 14.0, color: Colors.black45),
                 ),
               ),
             ),
@@ -163,11 +161,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
     };
 
     return Scaffold(
+      key: widget.discoverScaffoldKey,
       body: EasyListView(
+        foregroundWidget: foreground,
         itemCount: playlistInfoList.length,
         headerSliverBuilder: appBarBuilder,
         itemBuilder: listItemBuilder,
-        dividerSize: 1.0,
+        dividerBuilder: (context, index) => Divider(height: 1.0, color: Colors.grey,),
       ),
     );
   }
@@ -219,8 +219,8 @@ class CoverWithPlayButtonWidget extends StatelessWidget {
               color: Colors.pinkAccent,
               onPressed: () => KubePlayerPlugin.startPlay(playlistInfo.id)
                   .then((success) {}),
-              padding: EdgeInsets.all(0.0),
-              child: Icon(
+              padding: const EdgeInsets.all(0.0),
+              child: const Icon(
                 Icons.play_arrow,
                 color: Colors.white,
                 size: 36.0,

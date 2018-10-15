@@ -1,33 +1,31 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_kube/CategoryPage.dart';
 import 'package:flutter_kube/DiscoverPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:kube_player_plugin/kube_player_plugin.dart';
+import 'package:multi_navigator_bottom_bar/multi_navigator_bottom_bar.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 enum TabItem { discover, category }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-  final KK.KKBOXOpenAPI openApi = KK.KKBOXOpenAPI(
+  static final KK.KKBOXOpenAPI openApi = KK.KKBOXOpenAPI(
       "fc87971f683fd619ba46be6e3aa2cbc2", "5b70cd567551d03d4c43c5cec9e02d1a");
 
   @override
-  Widget build(BuildContext context) {
-    print("open api: $openApi");
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        backgroundColor: Colors.white,
-        primarySwatch: Colors.pink,
-      ),
-      home: MyHomePage(openApi, title: 'Flutter Demo Home Page'),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          canvasColor: Colors.white,
+          primarySwatch: Colors.pink,
+        ),
+        home: MyHomePage(openApi, title: 'Flutter Demo Home Page'),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -35,39 +33,32 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
   final KK.KKBOXOpenAPI api;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   MyHomePageState createState() => MyHomePageState(api);
 }
 
-class MyHomePageState extends State<MyHomePage> {
-  final List<BottomNavigationBarItem> tabItems = [
-    new BottomNavigationBarItem(
-        icon: new Icon(Icons.whatshot), title: new Text("Today")),
-    new BottomNavigationBarItem(
-        icon: new Icon(Icons.library_music), title: new Text("歌單"))
-  ];
-
-  final nowPlayingHeight = 52.0;
-
+class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  final nowPlayingHeight = 60.0;
   int _pageIndex = 0;
-  TabItem currentTab = TabItem.discover;
-
   KK.KKBOXOpenAPI api;
-
-//  final _insideScaffoldKey = new GlobalKey<ScaffoldState>();
-
-  MyHomePageState(this.api);
-
-  PersistentBottomSheetController bottomSheetController;
-
-  static Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
-    TabItem.discover: GlobalKey<NavigatorState>(),
-    TabItem.category: GlobalKey<NavigatorState>(),
-  };
-
   Map<String, dynamic> trackInfoMap;
   bool isPlaying = false;
+  var tabs = <BottomBarTab>[
+    BottomBarTab(
+      initPageBuilder: (context) => DiscoverPage(MyApp.openApi),
+      tabIconBuilder: (_) => Icon(Icons.whatshot),
+      tabTitleBuilder: (_) => Text("Featured"),
+    ),
+    BottomBarTab(
+      initPageBuilder: (context) => CategoryPage(MyApp.openApi),
+      tabIconBuilder: (_) => Icon(Icons.library_music),
+      tabTitleBuilder: (_) => Text("Playlist"),
+    ),
+  ];
+
+  MyHomePageState(this.api);
 
   @override
   void initState() {
@@ -95,85 +86,27 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var columnChildren = <Widget>[
-      Expanded(
-        child: Stack(
-          children: <Widget>[
-            _buildOffstageNavigator(TabItem.discover),
-            _buildOffstageNavigator(TabItem.category),
-          ],
-        ),
-      ),
-      trackInfoMap == null
-          ? null
-          : buildNowPlayingBar(trackInfoMap['coverUrl'], trackInfoMap['name'],
-              trackInfoMap['artistName'], isPlaying)
-    ];
-    columnChildren.removeWhere((w) => w == null);
-    return WillPopScope(
-      onWillPop: () async =>
-          !await navigatorKeys[currentTab].currentState.maybePop(),
-      child: new Scaffold(
-        body: Column(
-          children: columnChildren,
-        ),
-        bottomNavigationBar: new BottomNavigationBar(
-          currentIndex: _pageIndex,
-          items: tabItems,
-          onTap: (index) {
-            setState(() {
-              if (_pageIndex == index) {
-                var currentSubPageState =
-                    navigatorKeys[currentTab].currentState;
-                currentSubPageState.popUntil((route) {
-                  return route.isFirst;
-                });
-              } else {
-                _pageIndex = index;
-                switch (index) {
-                  case 0:
-                    currentTab = TabItem.discover;
-                    break;
-                  case 1:
-                    currentTab = TabItem.category;
-                    break;
-                }
-              }
-            });
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOffstageNavigator(TabItem tabItem) {
-    return new Offstage(
-      offstage: tabItem != currentTab,
-      child: KubeNavigator(
-        api: api,
-        initPage: _buildPageWidget(tabItem),
-        navigatorKey: navigatorKeys[tabItem],
-      ),
-    );
-  }
-
-  Widget _buildPageWidget(TabItem tabItem) {
-    switch (tabItem) {
-      case TabItem.discover:
-        return DiscoverPage(api);
-      case TabItem.category:
-      default:
-        return CategoryPage(api);
-    }
-  }
+  Widget build(BuildContext context) => MultiNavigatorBottomBar(
+        currentTabIndex: _pageIndex,
+        tabs: tabs,
+        pageWidgetDecorator: (pageWidget) => Column(
+              children: <Widget>[
+                Expanded(child: pageWidget),
+                trackInfoMap != null
+                    ? buildNowPlayingBar(
+                        trackInfoMap['coverUrl'],
+                        trackInfoMap['name'],
+                        trackInfoMap['artistName'],
+                        isPlaying)
+                    : Container(height: 0.0),
+              ],
+            ),
+      );
 
   Widget buildNowPlayingBar(
       String coverUrl, String trackName, String artistName, bool isPlaying) {
     return GestureDetector(
-      onTap: () {
-        KubePlayerPlugin.openNowPlaying();
-      },
+      onTap: () => KubePlayerPlugin.openNowPlaying(),
       child: Container(
         color: Colors.black54,
         height: nowPlayingHeight,
@@ -213,16 +146,13 @@ class MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            GestureDetector(
-              child: Container(
-                height: nowPlayingHeight,
-                width: nowPlayingHeight,
-                child: Icon(
-                  isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
-                ),
+            IconButton(
+              iconSize: nowPlayingHeight - 32.0,
+              icon: Icon(
+                isPlaying ? Icons.pause : Icons.play_arrow,
+                color: Colors.white,
               ),
-              onTap: () {
+              onPressed: () {
                 isPlaying
                     ? KubePlayerPlugin.pause()
                     : KubePlayerPlugin.resumePlay();
@@ -231,38 +161,6 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class KubeNavigator extends StatelessWidget {
-  KubeNavigator(
-      {@required this.api, @required this.initPage, this.navigatorKey});
-
-  final KK.KKBOXOpenAPI api;
-  final GlobalKey<NavigatorState> navigatorKey;
-  final Widget initPage;
-
-  WidgetBuilder routePageBuilder(String routName,
-      {KK.PlaylistInfo playlistInfo, String heroTag}) {
-    switch (routName) {
-      case "/":
-      default:
-        return (context) => initPage;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      onGenerateRoute: (routeName) {
-        return CupertinoPageRoute(
-            // Default route???
-            builder: (context) {
-          return routePageBuilder(routeName.name)(context);
-        });
-      },
     );
   }
 }

@@ -12,27 +12,31 @@ class CategoryPage extends StatefulWidget {
   final KK.KKBOXOpenAPI api;
 
   @override
-  CategoryPageState createState() => CategoryPageState();
+  _CategoryPageState createState() => _CategoryPageState();
+
+  static String title() => _CategoryPageState.title;
 }
 
-class CategoryPageState extends State<CategoryPage> {
+class _CategoryPageState extends State<CategoryPage> {
+  static String title = "歌單";
   var playlistInfoList = <KK.PlaylistInfo>[];
-  var appBarBuilder = (BuildContext context, bool innerBoxIsScrolled) => [
-        SliverAppBar(
-          expandedHeight: 120.0,
-          pinned: true,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Container(
-              child: Text(
-                "歌單",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
+  var appBarBuilder = (BuildContext context, bool innerBoxIsScrolled) =>
+  [
+    SliverAppBar(
+      expandedHeight: 120.0,
+      pinned: true,
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Container(
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.black),
           ),
         ),
-      ];
+      ),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +77,10 @@ class CategoryPageState extends State<CategoryPage> {
 
   Widget buildList(List<KK.PlaylistInfo> playlistList) {
     var imageHeight = 100.0;
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     var listItemBuilder = (BuildContext context, int index) {
       var playlistInfo = playlistList[index];
       return Container(
@@ -125,8 +132,7 @@ class CategoryPageState extends State<CategoryPage> {
       removeTop: true,
       child: EasyListView(
         itemCount: playlistInfoList.length,
-        dividerSize: 16.0,
-        dividerColor: Colors.transparent,
+        dividerBuilder: (context, index) => Container(height: 16.0),
         itemBuilder: listItemBuilder,
       ),
     );
@@ -136,16 +142,16 @@ class CategoryPageState extends State<CategoryPage> {
     var heroTag = "CategoryItem:$index";
     var navigationDuration =
         CupertinoPageRoute(builder: (_) {}).transitionDuration;
+    var page = DiscoverDetailPage(
+      widget.api,
+      playlistInfo: playlistInfo,
+      heroTag: heroTag,
+      navigationDuration: navigationDuration,
+    );
+    var route = CupertinoPageRoute(builder: (_) => page);
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (_) => DiscoverDetailPage(
-              widget.api,
-              playlistInfo: playlistInfo,
-              heroTag: heroTag,
-              navigationDuration: navigationDuration,
-            ),
-      ),
+      route,
     );
   }
 }
