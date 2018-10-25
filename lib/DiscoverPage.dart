@@ -70,7 +70,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         },
       );
 
-  tempLayout(Widget child) =>
+  Widget tempLayout(Widget child) =>
       Container(alignment: AlignmentDirectional.center, child: child);
 
   Widget buildList(List<KK.PlaylistInfo> playlistInfoList,

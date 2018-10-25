@@ -19,7 +19,7 @@ dependencies:
   share: ^0.5.3
   easy_listview: ^0.0.5
   after_routing_handler: ^0.0.1
-  multi_navigator_bottom_bar: ^0.0.3
+  multi_navigator_bottom_bar: ^0.0.7
 
 dev_dependencies:
   flutter_test:

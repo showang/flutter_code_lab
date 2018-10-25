@@ -177,7 +177,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: a7a19f4b462f4ad25e27ae904cc85b961d1d5806
+      resolved-ref: "36477288d8979346963d0bb2f2d8226837c8bb91"
       url: "git@github.com:KKBOX-XDDD/kube_player_plugin.git"
     source: git
     version: "0.0.3"
@@ -215,7 +215,7 @@ packages:
       name: multi_navigator_bottom_bar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.7"
   multi_server_socket:
     dependency: transitive
     description:

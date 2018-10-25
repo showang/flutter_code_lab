@@ -192,7 +192,7 @@
         <entry key="kube_player_plugin">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-a7a19f4b462f4ad25e27ae904cc85b961d1d5806/lib" />
+              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-36477288d8979346963d0bb2f2d8226837c8bb91/lib" />
             </list>
           </value>
         </entry>
@@ -231,7 +231,7 @@
         <entry key="multi_navigator_bottom_bar">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/multi_navigator_bottom_bar-0.0.3/lib" />
+              <option value="$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/multi_navigator_bottom_bar-0.0.7/lib" />
             </list>
           </value>
         </entry>
@@ -537,7 +537,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/watcher-0.9.7+10/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-1.0.9/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/yaml-2.1.15/lib" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-a7a19f4b462f4ad25e27ae904cc85b961d1d5806/lib" />
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-36477288d8979346963d0bb2f2d8226837c8bb91/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/after_routing_handler-0.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.33.0/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/args-1.5.0/lib" />
@@ -564,7 +564,7 @@
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.3+1/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.1.6/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/mime-0.9.6+2/lib" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/multi_navigator_bottom_bar-0.0.3/lib" />
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/multi_navigator_bottom_bar-0.0.7/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/multi_server_socket-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/node_preamble-1.4.4/lib" />
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-1.0.5/lib" />

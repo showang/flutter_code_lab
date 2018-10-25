@@ -54,13 +54,17 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   @override
   void initState() {
     super.initState();
-    AfterRoutingHandler(pageState: this, duration: widget.navigationDuration)
-      ..apiUpdate(
-        fetchData: tracks.length == 0,
-        apiFuture: apiFuture(0),
-        apiErrorCallback: (e) => print("onApiError: $e"),
-        updateDataDelegate: _updateTrackList,
-      );
+    try {
+      AfterRoutingHandler(pageState: this, duration: widget.navigationDuration)
+        ..apiUpdate(
+          fetchData: tracks.length == 0,
+          apiFuture: apiFuture(0),
+          apiErrorCallback: (e) => print("onApiError: $e"),
+          updateDataDelegate: _updateTrackList,
+        );
+    } catch (error) {
+      print("error catched: $error");
+    }
   }
 
   @override
@@ -73,7 +77,8 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
         loadMore: hasNextPage,
         onLoadMore: () => requestPageData(nextOffset),
         loadMoreWhenNoData: true,
-        dividerBuilder: (context, index) => Divider(height: 1.0, color: Colors.grey,),
+        dividerBuilder: (context, index) =>
+            Divider(height: 1.0, color: Colors.grey,),
         controller: scrollController,
       ),
       floatingActionButton: AnimatedOpacity(
@@ -95,14 +100,18 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
         .then(_updateTrackList);
   }
 
-  _updateTrackList(KK.TrackList trackList) => setState(() {
+  _updateTrackList(KK.TrackList trackList) =>
+      setState(() {
         hasNextPage = trackList.tracks.length > 0;
         tracks.addAll(trackList.tracks);
         nextOffset = tracks.length;
       });
 
   Widget buildCoverImage() {
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return GestureDetector(
       child: Container(
         width: screenWidth,
@@ -152,16 +161,17 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
               break;
           }
         },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<TrackOptions>>[
-              const PopupMenuItem<TrackOptions>(
-                value: TrackOptions.playTrack,
-                child: const Text('Play track'),
-              ),
-              const PopupMenuItem<TrackOptions>(
-                value: TrackOptions.openInKkbox,
-                child: const Text('Open in KKBOX'),
-              ),
-            ],
+        itemBuilder: (BuildContext context) =>
+        <PopupMenuEntry<TrackOptions>>[
+          const PopupMenuItem<TrackOptions>(
+            value: TrackOptions.playTrack,
+            child: const Text('Play track'),
+          ),
+          const PopupMenuItem<TrackOptions>(
+            value: TrackOptions.openInKkbox,
+            child: const Text('Open in KKBOX'),
+          ),
+        ],
       ),
       onTap: () {
         KubePlayerPlugin.startPlay(playlistInfo.id, index).then((success) {});
@@ -170,7 +180,10 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   }
 
   Widget _headerViewBuilder(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Column(children: <Widget>[
       Container(
         padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 12.0),
@@ -187,7 +200,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
                   child: Text(
                     playlistInfo.title,
                     style:
-                        TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.start,
                   ),
                 ),
@@ -210,8 +223,9 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
             Container(
               alignment: AlignmentDirectional.topEnd,
               child: IconButton(
-                onPressed: () => Share.share(
-                    "https://kube-app.com/playlist/${playlistInfo.id}"),
+                onPressed: () =>
+                    Share.share(
+                        "https://kube-app.com/playlist/${playlistInfo.id}"),
                 icon: Icon(
                   Icons.share,
                   size: 36.0,
@@ -242,7 +256,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
       ),
       Container(
         padding:
-            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 0.0),
+        EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 0.0),
         alignment: AlignmentDirectional.topStart,
         child: Text(
           "更新時間：${playlistInfo.lastUpdateDate}",
@@ -254,7 +268,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
       ),
       Container(
         padding:
-            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+        EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
         alignment: AlignmentDirectional.topStart,
         child: GestureDetector(
           onTap: () => setState(() => expandDesc = !expandDesc),

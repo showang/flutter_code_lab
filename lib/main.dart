@@ -47,12 +47,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool isPlaying = false;
   var tabs = <BottomBarTab>[
     BottomBarTab(
-      initPageBuilder: (context) => DiscoverPage(MyApp.openApi),
+      initPage: DiscoverPage(MyApp.openApi),
       tabIconBuilder: (_) => Icon(Icons.whatshot),
       tabTitleBuilder: (_) => Text("Featured"),
     ),
     BottomBarTab(
-      initPageBuilder: (context) => CategoryPage(MyApp.openApi),
+      initPage: CategoryPage(MyApp.openApi),
       tabIconBuilder: (_) => Icon(Icons.library_music),
       tabTitleBuilder: (_) => Text("Playlist"),
     ),
@@ -87,7 +87,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => MultiNavigatorBottomBar(
-        currentTabIndex: _pageIndex,
+        initTabIndex: _pageIndex,
         tabs: tabs,
         pageWidgetDecorator: (pageWidget) => Column(
               children: <Widget>[
