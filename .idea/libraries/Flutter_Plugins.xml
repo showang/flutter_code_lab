@@ -2,8 +2,8 @@
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.5.3" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-4.0.1" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-36477288d8979346963d0bb2f2d8226837c8bb91" />
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-f2781fb1aa1e1fad5c1b6db30eb8c602de544b2d" />
+      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-4.0.2" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

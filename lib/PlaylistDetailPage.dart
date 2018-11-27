@@ -3,29 +3,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:after_routing_handler/after_routing_handler.dart';
-import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
+import 'package:kkbox_openapi/kkbox_openapi.dart' show PlaylistInfo;
+import 'package:kkbox_openapi/kkbox_openapi.dart' show KKBOXOpenAPI;
+import 'package:kkbox_openapi/kkbox_openapi.dart' show TrackList;
+import 'package:kkbox_openapi/kkbox_openapi.dart' show TrackInfo;
 import 'package:kube_player_plugin/kube_player_plugin.dart';
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DiscoverDetailPage extends StatefulWidget {
-  DiscoverDetailPage(this.api,
+class PlaylistDetailPage extends StatefulWidget {
+  PlaylistDetailPage(this.api,
       {this.playlistInfo, this.heroTag, this.navigationDuration});
 
   final String heroTag;
-  final KK.PlaylistInfo playlistInfo;
-  final KK.KKBOXOpenAPI api;
+  final PlaylistInfo playlistInfo;
+  final KKBOXOpenAPI api;
   final Duration navigationDuration;
 
   @override
-  State<StatefulWidget> createState() => DiscoverDetailState(heroTag);
+  State<StatefulWidget> createState() => PlaylistDetailState(heroTag);
 }
 
 enum TrackOptions { openInKkbox, playTrack }
 
-class DiscoverDetailState extends State<DiscoverDetailPage> {
-  DiscoverDetailState(this.heroTag) {
+class PlaylistDetailState extends State<PlaylistDetailPage> {
+  PlaylistDetailState(this.heroTag) {
     scrollController = ScrollController()
       ..addListener(() {
         var isScrollDown = scrollController.offset > _lastOffset;
@@ -40,27 +43,32 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   String heroTag;
   bool hasNextPage = true;
   int nextOffset = 0;
-  List<KK.TrackInfo> tracks = [];
+  List<TrackInfo> tracks = [];
   var expandDesc = false;
   var _lastOffset = 0.0;
   var _actionButtonVisible = true;
   ScrollController scrollController;
 
-  KK.PlaylistInfo get playlistInfo => widget.playlistInfo;
+  PlaylistInfo get playlistInfo => widget.playlistInfo;
 
-  Future<KK.TrackList> apiFuture(offset) =>
+  Future<TrackList> apiFuture(offset) =>
       widget.api.fetchTracksInPlaylist(playlistInfo.id, offset: offset);
 
   @override
   void initState() {
     super.initState();
     try {
-      AfterRoutingHandler(pageState: this, duration: widget.navigationDuration)
-        ..apiUpdate(
-          fetchData: tracks.length == 0,
-          apiFuture: apiFuture(0),
-          apiErrorCallback: (e) => print("onApiError: $e"),
-          updateDataDelegate: _updateTrackList,
+      AfterRoutingHandler(this, transitionDuration: widget.navigationDuration)
+        ..scheduleFuture(
+          apiFuture(0),
+          shouldInvoke: tracks.length == 0,
+          errorCallback: (e) => print("Load playlist failed: $e"),
+          successDelegate: (trackList) => setState(() {
+            print("_updateTrackList");
+            hasNextPage = trackList.tracks.length > 0;
+            tracks.addAll(trackList.tracks);
+            nextOffset = tracks.length;
+          }),
         );
     } catch (error) {
       print("error catched: $error");
@@ -70,16 +78,20 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: EasyListView(
-        itemCount: tracks.length,
-        itemBuilder: _itemBuilder,
-        headerBuilder: _headerViewBuilder,
-        loadMore: hasNextPage,
-        onLoadMore: () => requestPageData(nextOffset),
-        loadMoreWhenNoData: true,
-        dividerBuilder: (context, index) =>
-            Divider(height: 1.0, color: Colors.grey,),
-        controller: scrollController,
+      body: Scrollbar(
+        child: EasyListView(
+          itemCount: tracks.length,
+          itemBuilder: _itemBuilder,
+          headerBuilder: _headerViewBuilder,
+          loadMore: hasNextPage,
+          onLoadMore: () => requestPageData(nextOffset),
+          loadMoreWhenNoData: true,
+          dividerBuilder: (context, index) => Divider(
+                height: 1.0,
+                color: Colors.grey,
+              ),
+          controller: scrollController,
+        ),
       ),
       floatingActionButton: AnimatedOpacity(
         duration: Duration(milliseconds: 200),
@@ -100,18 +112,15 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
         .then(_updateTrackList);
   }
 
-  _updateTrackList(KK.TrackList trackList) =>
-      setState(() {
+  void _updateTrackList(TrackList trackList) => setState(() {
+        print("_updateTrackList");
         hasNextPage = trackList.tracks.length > 0;
         tracks.addAll(trackList.tracks);
         nextOffset = tracks.length;
       });
 
   Widget buildCoverImage() {
-    var screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: Container(
         width: screenWidth,
@@ -161,17 +170,16 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
               break;
           }
         },
-        itemBuilder: (BuildContext context) =>
-        <PopupMenuEntry<TrackOptions>>[
-          const PopupMenuItem<TrackOptions>(
-            value: TrackOptions.playTrack,
-            child: const Text('Play track'),
-          ),
-          const PopupMenuItem<TrackOptions>(
-            value: TrackOptions.openInKkbox,
-            child: const Text('Open in KKBOX'),
-          ),
-        ],
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<TrackOptions>>[
+              const PopupMenuItem<TrackOptions>(
+                value: TrackOptions.playTrack,
+                child: const Text('Play track'),
+              ),
+              const PopupMenuItem<TrackOptions>(
+                value: TrackOptions.openInKkbox,
+                child: const Text('Open in KKBOX'),
+              ),
+            ],
       ),
       onTap: () {
         KubePlayerPlugin.startPlay(playlistInfo.id, index).then((success) {});
@@ -180,10 +188,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
   }
 
   Widget _headerViewBuilder(BuildContext context) {
-    var screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var screenWidth = MediaQuery.of(context).size.width;
     return Column(children: <Widget>[
       Container(
         padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 12.0),
@@ -200,7 +205,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
                   child: Text(
                     playlistInfo.title,
                     style:
-                    TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+                        TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.start,
                   ),
                 ),
@@ -222,10 +227,10 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
             ),
             Container(
               alignment: AlignmentDirectional.topEnd,
+              margin: EdgeInsets.only(top: 8.0),
               child: IconButton(
-                onPressed: () =>
-                    Share.share(
-                        "https://kube-app.com/playlist/${playlistInfo.id}"),
+                onPressed: () => Share.share(
+                    "https://kube-app.com/playlist/${playlistInfo.id}"),
                 icon: Icon(
                   Icons.share,
                   size: 36.0,
@@ -256,7 +261,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
       ),
       Container(
         padding:
-        EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 0.0),
+            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 0.0),
         alignment: AlignmentDirectional.topStart,
         child: Text(
           "更新時間：${playlistInfo.lastUpdateDate}",
@@ -268,7 +273,7 @@ class DiscoverDetailState extends State<DiscoverDetailPage> {
       ),
       Container(
         padding:
-        EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+            EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
         alignment: AlignmentDirectional.topStart,
         child: GestureDetector(
           onTap: () => setState(() => expandDesc = !expandDesc),

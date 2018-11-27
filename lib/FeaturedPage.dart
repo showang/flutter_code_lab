@@ -2,26 +2,28 @@ import 'package:easy_listview/easy_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_kube/DiscoverDetailPage.dart';
+import 'package:flutter_kube/PlaylistDetailPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:kube_player_plugin/kube_player_plugin.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class DiscoverPage extends StatefulWidget {
-  DiscoverPage(this.api, {Key key}) : super(key: key);
+import 'generated/i18n.dart';
+
+class FeaturedPage extends StatefulWidget {
+  FeaturedPage(this.api, {Key key}) : super(key: key);
 
   final KK.KKBOXOpenAPI api;
   final GlobalKey<ScaffoldState> discoverScaffoldKey =
       GlobalKey<ScaffoldState>();
 
   @override
-  _DiscoverPageState createState() => _DiscoverPageState();
+  _FeaturedPageState createState() => _FeaturedPageState();
 
-  static String title() => _DiscoverPageState.title;
+  static String title() => _FeaturedPageState.title;
 }
 
-class _DiscoverPageState extends State<DiscoverPage> {
-  _DiscoverPageState();
+class _FeaturedPageState extends State<FeaturedPage> {
+  _FeaturedPageState();
 
   List<KK.PlaylistInfo> playlistInfoList = [];
   static String title = "今日精選";
@@ -35,7 +37,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           flexibleSpace: FlexibleSpaceBar(
             title: Container(
               child: Text(
-                title,
+                S.of(context).featured,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -46,7 +48,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) => playlistInfoList.length == 0
       ? loadingFutureBuilder()
-      : buildList(playlistInfoList);
+      : buildList();
 
   loadingFutureBuilder() => FutureBuilder<KK.PlaylistList>(
         future: widget.api.fetchFeaturedPlaylists(),
@@ -66,15 +68,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 playlistInfoList.addAll(snapshot.data.playlists);
               }
           }
-          return buildList(playlistInfoList, foreground);
+          return buildList(foreground);
         },
       );
 
   Widget tempLayout(Widget child) =>
       Container(alignment: AlignmentDirectional.center, child: child);
 
-  Widget buildList(List<KK.PlaylistInfo> playlistInfoList,
-      [Widget foreground]) {
+  Widget buildList([Widget foreground]) {
     var listItemBuilder = (BuildContext context, int index) {
       var playlistInfo = playlistInfoList[index];
       var screenWidth = MediaQuery.of(context).size.width;
@@ -83,7 +84,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           CupertinoPageRoute(builder: (_) {}).transitionDuration;
       return GestureDetector(
         onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) {
-              return DiscoverDetailPage(
+              return PlaylistDetailPage(
                 widget.api,
                 playlistInfo: playlistInfo,
                 heroTag: heroTag,
@@ -117,7 +118,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 child: Row(
                   children: [
                     Text(
-                      "作者: ",
+                      S.of(context).title_author,
                       style: const TextStyle(
                           fontSize: 18.0, color: Colors.black87),
                     ),
@@ -167,7 +168,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
         itemCount: playlistInfoList.length,
         headerSliverBuilder: appBarBuilder,
         itemBuilder: listItemBuilder,
-        dividerBuilder: (context, index) => Divider(height: 1.0, color: Colors.grey,),
+        dividerBuilder: (context, index) => Divider(
+              height: 1.0,
+              color: Colors.grey,
+            ),
       ),
     );
   }
