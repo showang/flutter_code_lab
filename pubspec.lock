@@ -89,10 +89,12 @@ packages:
   kkbox_openapi:
     dependency: "direct main"
     description:
-      path: OpenAPI-Dart
-      relative: true
-    source: path
-    version: "0.9.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "3160325cee1a6ef9fd8411ece69fa3e6c2efd83b"
+      url: "git@github.com:KKBOX/OpenAPI-Dart.git"
+    source: git
+    version: "0.9.8"
   kube_player_plugin:
     dependency: "direct main"
     description:

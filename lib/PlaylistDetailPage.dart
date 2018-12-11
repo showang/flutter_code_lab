@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:after_routing_handler/after_routing_handler.dart';
-import 'package:kkbox_openapi/kkbox_openapi.dart' show PlaylistInfo;
+import 'package:kkbox_openapi/kkbox_openapi.dart' show PlaylistInfo, Territory;
 import 'package:kkbox_openapi/kkbox_openapi.dart' show KKBOXOpenAPI;
 import 'package:kkbox_openapi/kkbox_openapi.dart' show TrackList;
 import 'package:kkbox_openapi/kkbox_openapi.dart' show TrackInfo;
@@ -52,7 +52,7 @@ class PlaylistDetailState extends State<PlaylistDetailPage> {
   PlaylistInfo get playlistInfo => widget.playlistInfo;
 
   Future<TrackList> apiFuture(offset) =>
-      widget.api.fetchTracksInPlaylist(playlistInfo.id, offset: offset);
+      widget.api.fetchTracksInPlaylist(playlistInfo.id, Territory.taiwan, offset);
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class PlaylistDetailState extends State<PlaylistDetailPage> {
 
   void requestPageData(int offset) {
     widget.api
-        .fetchTracksInPlaylist(playlistInfo.id, offset: offset)
+        .fetchTracksInPlaylist(playlistInfo.id, Territory.taiwan, offset)
         .then(_updateTrackList);
   }
 
