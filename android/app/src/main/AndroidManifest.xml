@@ -39,17 +39,17 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.kubeapp.kubeplayerplugin.nowplaying.NowPlayingActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!--<activity-->
+            <!--android:name="com.kubeapp.kubeplayerplugin.nowplaying.NowPlayingActivity"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
 
-        <service
-            android:name="com.kubeapp.kubeplayerplugin.service.KubeService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name="com.kubeapp.kubeplayerplugin.service.KubeService"-->
+            <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MEDIA_BUTTON" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
     </application>
 </manifest>

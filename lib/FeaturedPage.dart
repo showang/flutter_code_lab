@@ -2,9 +2,9 @@ import 'package:easy_listview/easy_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_kube/KubePlayerPlugin.dart';
 import 'package:flutter_kube/PlaylistDetailPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
-import 'package:kube_player_plugin/kube_player_plugin.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'generated/i18n.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kube/PlaylistPage.dart';
 import 'package:flutter_kube/FeaturedPage.dart';
+import 'package:flutter_kube/KubePlayerPlugin.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
-import 'package:kube_player_plugin/kube_player_plugin.dart';
 import 'package:multi_navigator_bottom_bar/multi_navigator_bottom_bar.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   static final KK.KKBOXOpenAPI openApi = KK.KKBOXOpenAPI(
-      "fc87971f683fd619ba46be6e3aa2cbc2", "5b70cd567551d03d4c43c5cec9e02d1a");
+      "a375efdf3d7e58762ae7a866f08af63d", "907640053e1a020c372602838d36f5c1");
 
   @override
   Widget build(BuildContext context) => MaterialApp(

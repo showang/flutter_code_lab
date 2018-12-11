@@ -95,15 +95,6 @@ packages:
       url: "git@github.com:KKBOX/OpenAPI-Dart.git"
     source: git
     version: "0.9.8"
-  kube_player_plugin:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1261c254e3dc306304bed3d0afcf166411be0200"
-      url: "git@github.com:KKBOX-XDDD/kube_player_plugin.git"
-    source: git
-    version: "0.1.01"
   matcher:
     dependency: transitive
     description:
