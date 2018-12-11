@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">Kube</string>
+
+    <string name="player_name_youtube" translatable="false">YouTube</string>
+    <string name="player_name_spotify" translatable="false">Spotify</string>
+
+    <string name="authorText">by &lt;u>%s&lt;/u></string>
+    <string name="updateTimeText">Updated at: %s</string>
+
+    <string name="category_new_hits">New Hits</string>
+    <string name="category_charts">Charts</string>
+    <string name="category_playlist_categories">Playlist Categories</string>
+
+    <string name="loading">Loading…</string>
+    <string name="search">Search</string>
+
+    <string name="title_feature">Feature</string>
+    <string name="title_playlist">Playlist</string>
+    <string name="title_setting">Setting</string>
+    <string name="title_personal">My</string>
+
+    <string name="title_share_playlist">Share playlist</string>
+    <string name="title_general_setting">General</string>
+    <string name="title_other_setting">Others</string>
+    <string name="title_territory">Territory</string>
+    <string name="title_homePage">Home Page</string>
+    <string name="title_music_service">Music Service</string>
+    <string name="title_faq" translatable="false">Q &amp; A</string>
+    <string name="title_rating">Hit five stars</string>
+
+    <string name="date_today">Today,</string>
+    <string name="date_yesterday">Yesterday,</string>
+    <string name="date_before_yesterday">Before yesterday,</string>
+
+    <string name="error_network">Network error, plz retry later.</string>
+    <string name="error_retry_title">Retry</string>
+
+    <string name="tab_labeled_playlist">Labeled Playlist</string>
+    <string name="tab_play_history">Play History</string>
+
+    <string name="message_labeled_playlist">Playlist is labeled</string>
+    <string name="message_unlabeled_playlist">Playlist is unlabeled</string>
+
+    <string name="message_music_ignored">This music is ignored</string>
+    <string name="message_music_activated">This music is activated</string>
+
+    <string name="message_something_not_support">%s not support yet</string>
+
+    <string name="message_error_fetch_music_fail">Fetch tracks failed, plz try again later.</string>
+
+    <string name="message_export_to_music_service_confirm">Will create a new playlist to your music service.</string>
+
+    <string name="options_play_track">Play</string>
+    <string name="options_open_in_kkbox">Open in KKBOX</string>
+
+    <string name="welcome_title">Welcome to</string>
+    <string name="label_kube">KUBE</string>
+    <string name="welcome_will_find">What wou can find here are…</string>
+    <string name="welcome_feature_one">expert-curated playlists from KKBOX</string>
+    <string name="welcome_feature_two">various ways to play them. YouTube and Spotify.</string>
+    <string name="welcome_feature_last">…and more!</string>
+    <string name="welcome_go">Let\'s go!</string>
+    <string name="welcome_continue">Continue</string>
+
+    <string name="notify_exporting">Exporting playlist…</string>
+    <string name="notify_export_success">Export success!!!</string>
+    <string name="notify_export_failed">Export failed…</string>
+
+    <string-array name="options_share_ways">
+        <item>Share playlist web url</item>
+        <item>Export playlist to music service</item>
+    </string-array>
+
+    <string-array name="options_territory">
+        <item>Japan</item>
+        <item>Taiwan</item>
+        <item>Hong Kong</item>
+        <item>Malaysia</item>
+        <item>Singapore</item>
+    </string-array>
+
+    <string-array name="options_territory_value" translatable="false">
+        <item>jp</item>
+        <item>tw</item>
+        <item>hk</item>
+        <item>my</item>
+        <item>sg</item>
+    </string-array>
+
+    <string name="format_time" translatable="false">%1$s:%2$s</string>
+
+    <string name="asset_statements" translatable="false">
+  [{
+    \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+    \"target\": {
+      \"namespace\": \"web\",
+      \"site\": \"https://www.kube-app.com\"
+    }
+  }]
+    </string>
+
+    <string name="acc_playlist">Playlist </string>
+    <string name="acc_play_playlist">Play playlist</string>
+    <string name="acc_play">Play </string>
+    <string name="acc_category">Category </string>
+    <string name="acc_button">Button </string>
+    <string name="acc_share_playlist">Share playlist</string>
+    <string name="acc_label_playlist">Label playlist</string>
+    <string name="acc_now_playing">Now playing </string>
+
+</resources>
