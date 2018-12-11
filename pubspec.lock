@@ -98,10 +98,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f2781fb1aa1e1fad5c1b6db30eb8c602de544b2d
+      resolved-ref: "1261c254e3dc306304bed3d0afcf166411be0200"
       url: "git@github.com:KKBOX-XDDD/kube_player_plugin.git"
     source: git
-    version: "0.1.0"
+    version: "0.1.01"
   matcher:
     dependency: transitive
     description:

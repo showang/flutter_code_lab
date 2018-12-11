@@ -2,7 +2,7 @@ PODS:
   - Cartography (3.1.0)
   - Flutter (1.0.0)
   - KKBOXOpenAPISwift (1.1.5)
-  - kube_player_plugin (0.1.0):
+  - kube_player_plugin (0.1.01):
     - Cartography
     - Flutter
     - KKBOXOpenAPISwift (~> 1.1.5)
@@ -42,14 +42,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Cartography: 1988b7578871a56c036e7af17195cb2190edf18c
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   KKBOXOpenAPISwift: 9a9b6d61bf61d8614301fbee2c82c9d0cd334d96
-  kube_player_plugin: 8b0882b895273d8ee118b48bd5ec092807b55aab
+  kube_player_plugin: 962978fbf3d29d37d40569b5d06c47a9e8675450
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
-  share: 222b5dcc8031238af9d7de91149df65bad1aef75
-  url_launcher: 92b89c1029a0373879933c21642958c874539095
+  share: 7d22fe8baedfe93aefd864bf0b73f29711fbb0a3
+  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
 PODFILE CHECKSUM: e4dab8366a5c2a2436ced58745573fa522959922
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2

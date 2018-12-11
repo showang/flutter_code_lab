@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.5.3" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/git/kube_player_plugin-f2781fb1aa1e1fad5c1b6db30eb8c602de544b2d" />
-      <root url="file://$PROJECT_DIR$/../../libs/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-4.0.2" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-4.0.2" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share-0.5.3" />
+      <root url="file://$USER_HOME$/.pub-cache/git/kube_player_plugin-1261c254e3dc306304bed3d0afcf166411be0200" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
