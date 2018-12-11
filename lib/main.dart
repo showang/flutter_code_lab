@@ -8,8 +8,6 @@ import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:multi_navigator_bottom_bar/multi_navigator_bottom_bar.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'generated/i18n.dart';
-
 void main() => runApp(MyApp());
 
 enum TabItem { discover, category }
@@ -23,11 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         localizationsDelegates: [
-          S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: S.delegate.supportedLocales,
         title: 'Flutter KUBE',
         theme: ThemeData(
           canvasColor: Colors.white,
@@ -57,12 +53,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     BottomBarTab(
       initPage: FeaturedPage(MyApp.openApi),
       tabIconBuilder: (_) => Icon(Icons.whatshot),
-      tabTitleBuilder: (context) => Text(S.of(context).featured),
+      tabTitleBuilder: (context) => Text("精選"),
     ),
     BottomBarTab(
       initPage: PlaylistPage(MyApp.openApi),
       tabIconBuilder: (_) => Icon(Icons.library_music),
-      tabTitleBuilder: (context) => Text(S.of(context).playlist),
+      tabTitleBuilder: (context) => Text("歌單"),
     ),
   ];
 

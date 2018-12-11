@@ -7,8 +7,6 @@ import 'package:flutter_kube/PlaylistDetailPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:transparent_image/transparent_image.dart';
 
-import 'generated/i18n.dart';
-
 class PlaylistPage extends StatefulWidget {
   PlaylistPage(this.api, {Key key}) : super(key: key);
 
@@ -30,7 +28,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           flexibleSpace: FlexibleSpaceBar(
             title: Container(
               child: Text(
-                S.of(context).playlist,
+                "歌單",
                 style: TextStyle(color: Colors.black),
               ),
             ),

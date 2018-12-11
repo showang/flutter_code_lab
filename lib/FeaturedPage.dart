@@ -7,8 +7,6 @@ import 'package:flutter_kube/PlaylistDetailPage.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
 import 'package:transparent_image/transparent_image.dart';
 
-import 'generated/i18n.dart';
-
 class FeaturedPage extends StatefulWidget {
   FeaturedPage(this.api, {Key key}) : super(key: key);
 
@@ -37,7 +35,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
           flexibleSpace: FlexibleSpaceBar(
             title: Container(
               child: Text(
-                S.of(context).featured,
+                title,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -118,7 +116,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
                 child: Row(
                   children: [
                     Text(
-                      S.of(context).title_author,
+                      "作者：",
                       style: const TextStyle(
                           fontSize: 18.0, color: Colors.black87),
                     ),
