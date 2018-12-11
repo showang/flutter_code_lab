@@ -49,17 +49,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   KK.KKBOXOpenAPI api;
   Map<String, dynamic> trackInfoMap;
   bool isPlaying = false;
-  var tabs = <BottomBarTab>[
-    BottomBarTab(
-      initPage: FeaturedPage(MyApp.openApi),
-      tabIconBuilder: (_) => Icon(Icons.whatshot),
-      tabTitleBuilder: (context) => Text("精選"),
-    ),
-    BottomBarTab(
-      initPage: PlaylistPage(MyApp.openApi),
-      tabIconBuilder: (_) => Icon(Icons.library_music),
-      tabTitleBuilder: (context) => Text("歌單"),
-    ),
+  var pages = [
+    FeaturedPage(MyApp.openApi),
+    PlaylistPage(MyApp.openApi),
   ];
 
   MyHomePageState(this.api);
@@ -91,7 +83,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: pageContainer(context),
+        body: pages[_pageIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _pageIndex,
           onTap: (index) => setState(() => _pageIndex = index),
@@ -108,16 +100,6 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
       );
 
-  Widget pageContainer(BuildContext context) => Stack(children: <Widget>[
-        Offstage(
-          offstage: _pageIndex != 0,
-          child: FeaturedPage(MyApp.openApi),
-        ),
-        Offstage(
-          offstage: _pageIndex != 1,
-          child: PlaylistPage(MyApp.openApi),
-        ),
-      ]);
 }
 
 class NowPlayingBar extends StatelessWidget {
