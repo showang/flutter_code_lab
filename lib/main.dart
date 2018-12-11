@@ -90,22 +90,34 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => MultiNavigatorBottomBar(
-        initTabIndex: _pageIndex,
-        tabs: tabs,
-        pageWidgetDecorator: (pageWidget) => Column(
-              children: <Widget>[
-                Expanded(child: pageWidget),
-                trackInfoMap != null
-                    ? NowPlayingBar(
-                        coverUrl: trackInfoMap['coverUrl'],
-                        trackName: trackInfoMap['name'],
-                        artistName: trackInfoMap['artistName'],
-                        isPlaying: isPlaying)
-                    : Container(height: 0.0),
-              ],
+  Widget build(BuildContext context) => Scaffold(
+        body: pageContainer(context),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _pageIndex,
+          onTap: (index) => setState(() => _pageIndex = index),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.whatshot),
+              title: Text("精選"),
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.library_music),
+              title: Text("歌單"),
+            ),
+          ],
+        ),
       );
+
+  Widget pageContainer(BuildContext context) => Stack(children: <Widget>[
+        Offstage(
+          offstage: _pageIndex != 0,
+          child: FeaturedPage(MyApp.openApi),
+        ),
+        Offstage(
+          offstage: _pageIndex != 1,
+          child: PlaylistPage(MyApp.openApi),
+        ),
+      ]);
 }
 
 class NowPlayingBar extends StatelessWidget {
