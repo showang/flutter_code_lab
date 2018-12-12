@@ -86,7 +86,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         this.isPlaying = false;
       });
     });
-    KubePlayerPlugin.currentTrack();
+//    KubePlayerPlugin.currentTrack();
   }
 
   @override
