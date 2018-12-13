@@ -25,7 +25,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
         SliverAppBar(
           expandedHeight: 120.0,
           pinned: true,
-          brightness: Brightness.light,
+          brightness: Theme.of(context).platform == TargetPlatform.iOS
+              ? Brightness.light
+              : Brightness.dark,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           flexibleSpace: FlexibleSpaceBar(
