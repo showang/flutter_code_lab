@@ -25,6 +25,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         SliverAppBar(
           expandedHeight: 120.0,
           pinned: true,
+          brightness: Brightness.light,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           flexibleSpace: FlexibleSpaceBar(
@@ -68,14 +69,22 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: appBarBuilder,
-          body: Container(
-            child: bodyWidget(),
-            alignment: AlignmentDirectional.center,
-          ),
-        ),
-      );
+          body:
+//          Text("test")
+          EasyListView(
+            headerSliverBuilder: appBarBuilder,
+            itemCount: hotPlaylistInfoList.length + chartPlaylistInfoList.length,
+            dividerBuilder: (context, index) => Container(height: 16.0),
+            itemBuilder: listItemBuilder(),
+      )
+//        NestedScrollView(
+//          headerSliverBuilder: appBarBuilder,
+//          body: Container(
+//            child: bodyWidget(),
+//            alignment: AlignmentDirectional.center,
+//          ),
+//        ),
+          );
 
   Widget bodyWidget() {
     if (chartPlaylistInfoList.length == 0) {
@@ -101,10 +110,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
     }
   }
 
-  Widget buildList() {
+  IndexedWidgetBuilder listItemBuilder() {
     var imageHeight = 100.0;
     var screenWidth = MediaQuery.of(context).size.width;
-    var listItemBuilder = (BuildContext context, int index) {
+    return (BuildContext context, int index) {
       KK.PlaylistInfo playlistInfo;
       var hotPlaylistIndex = index - hotPlaylistInfoList.length;
       if (index < hotPlaylistInfoList.length) {
@@ -161,6 +170,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
         ),
       );
     };
+  }
+
+  Widget buildList() {
+
 
     return MediaQuery.removePadding(
       context: context,
@@ -168,15 +181,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
       child: EasyListView(
         itemCount: hotPlaylistInfoList.length + chartPlaylistInfoList.length,
         dividerBuilder: (context, index) => Container(height: 16.0),
-        itemBuilder: listItemBuilder,
+        itemBuilder: listItemBuilder(),
       ),
     );
   }
 
   openPlaylistDetailPage(KK.PlaylistInfo playlistInfo, int index) {
     var heroTag = "CategoryItem:$index";
-    var navigationDuration =
-        CupertinoPageRoute(builder: (_) {}).transitionDuration;
+    var navigationDuration = const Duration(milliseconds: 350);
     var page = PlaylistDetailPage(
       widget.api,
       playlistInfo: playlistInfo,

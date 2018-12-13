@@ -57,6 +57,7 @@ class PlaylistDetailState extends State<PlaylistDetailPage> {
   @override
   void initState() {
     super.initState();
+    print("Playlist Detail inited.");
     try {
       AfterRoutingHandler(this, transitionDuration: widget.navigationDuration)
         ..scheduleFuture(
@@ -64,7 +65,7 @@ class PlaylistDetailState extends State<PlaylistDetailPage> {
           shouldInvoke: tracks.length == 0,
           errorCallback: (e) => print("Load playlist failed: $e"),
           successDelegate: (trackList) => setState(() {
-            print("_updateTrackList");
+            print("_updateTrackList AfterRoutingHandler");
             hasNextPage = trackList.tracks.length > 0;
             tracks.addAll(trackList.tracks);
             nextOffset = tracks.length;

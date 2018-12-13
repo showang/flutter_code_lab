@@ -32,6 +32,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
         SliverAppBar(
           expandedHeight: 120.0,
           pinned: true,
+          brightness: Brightness.light,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           flexibleSpace: FlexibleSpaceBar(
@@ -76,105 +77,106 @@ class _FeaturedPageState extends State<FeaturedPage> {
       Container(alignment: AlignmentDirectional.center, child: child);
 
   Widget buildList([Widget foreground]) {
-    var listItemBuilder = (BuildContext context, int index) {
-      var playlistInfo = playlistInfoList[index];
-      var screenWidth = MediaQuery.of(context).size.width;
-      var heroTag = "item avatar$index";
-      var navigationDuration =
-          CupertinoPageRoute(builder: (_) {}).transitionDuration;
-      return GestureDetector(
-        onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) {
-              return PlaylistDetailPage(
-                widget.api,
-                playlistInfo: playlistInfo,
-                heroTag: heroTag,
-                navigationDuration: navigationDuration,
-              );
-            })),
-        child: Column(
-          children: [
-            CoverWithPlayButtonWidget(
-              screenWidth: screenWidth,
-              heroTag: heroTag,
-              playlistInfo: playlistInfo,
-            ),
-            Container(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 4.0, 80.0, 0.0),
-                child: Text(
-                  playlistInfo.title,
-                  style: TextStyle(
-                    fontSize: 28.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                child: Row(
-                  children: [
-                    Text(
-                      S.of(context).title_author,
-                      style: const TextStyle(
-                          fontSize: 18.0, color: Colors.black87),
-                    ),
-                    Text(
-                      playlistInfo.owner.name,
-                      style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.black87,
-                          decoration: TextDecoration.underline),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                child: Text(
-                  playlistInfo.description,
-                  style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                ),
-              ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
-                child: Text(
-                  playlistInfo.lastUpdateDate,
-                  style: const TextStyle(fontSize: 14.0, color: Colors.black45),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    };
-
     return Scaffold(
       key: widget.discoverScaffoldKey,
-      body: EasyListView(
+      body: foreground == null ? EasyListView(
         foregroundWidget: foreground,
         itemCount: playlistInfoList.length,
         headerSliverBuilder: appBarBuilder,
-        itemBuilder: listItemBuilder,
+        itemBuilder: listItemBuilder(),
         dividerBuilder: (context, index) => Divider(
               height: 1.0,
               color: Colors.grey,
             ),
-      ),
+      ) : foreground,
     );
   }
+
+
+  listItemBuilder() => (BuildContext context, int index) {
+    if(playlistInfoList.length == 0) return Text("No data");
+    var playlistInfo = playlistInfoList[index];
+    var screenWidth = MediaQuery.of(context).size.width;
+    var heroTag = "item avatar$index";
+    var navigationDuration = const Duration(milliseconds: 350);
+    return GestureDetector(
+      onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) {
+        return PlaylistDetailPage(
+          widget.api,
+          playlistInfo: playlistInfo,
+          heroTag: heroTag,
+          navigationDuration: navigationDuration,
+        );
+      })),
+      child: Column(
+        children: [
+          CoverWithPlayButtonWidget(
+            screenWidth: screenWidth,
+            heroTag: heroTag,
+            playlistInfo: playlistInfo,
+          ),
+          Container(
+            alignment: AlignmentDirectional.topStart,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 4.0, 80.0, 0.0),
+              child: Text(
+                playlistInfo.title,
+                style: TextStyle(
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            alignment: AlignmentDirectional.topStart,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Row(
+                children: [
+                  Text(
+                    S.of(context).title_author,
+                    style: const TextStyle(
+                        fontSize: 18.0, color: Colors.black87),
+                  ),
+                  Text(
+                    playlistInfo.owner.name,
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black87,
+                        decoration: TextDecoration.underline),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            alignment: AlignmentDirectional.topStart,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Text(
+                playlistInfo.description,
+                style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+            ),
+          ),
+          Container(
+            alignment: AlignmentDirectional.topStart,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
+              child: Text(
+                playlistInfo.lastUpdateDate,
+                style: const TextStyle(fontSize: 14.0, color: Colors.black45),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  };
 }
 
 class CoverWithPlayButtonWidget extends StatelessWidget {

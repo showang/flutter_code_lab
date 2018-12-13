@@ -5,8 +5,8 @@ import 'package:flutter_kube/PlaylistPage.dart';
 import 'package:flutter_kube/FeaturedPage.dart';
 import 'package:flutter_kube/KubePlayerPlugin.dart';
 import 'package:kkbox_openapi/kkbox_openapi.dart' as KK;
-import 'package:multi_navigator_bottom_bar/multi_navigator_bottom_bar.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:multi_navigator_bottom_bar/multi_navigator_bottom_bar.dart';
 
 import 'generated/i18n.dart';
 
@@ -53,51 +53,36 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   KK.KKBOXOpenAPI api;
   Map<String, dynamic> trackInfoMap;
   bool isPlaying = false;
-  var tabs = <BottomBarTab>[
-    BottomBarTab(
-      initPage: FeaturedPage(MyApp.openApi),
-      tabIconBuilder: (_) => Icon(Icons.whatshot),
-      tabTitleBuilder: (context) => Text(S.of(context).featured),
-    ),
-    BottomBarTab(
-      initPage: PlaylistPage(MyApp.openApi),
-      tabIconBuilder: (_) => Icon(Icons.library_music),
-      tabTitleBuilder: (context) => Text(S.of(context).playlist),
-    ),
-  ];
+  GlobalKey<State<StatefulWidget>> featuredKey =
+      GlobalKey<State<StatefulWidget>>();
+  GlobalKey<State<StatefulWidget>> playlistKey =
+      GlobalKey<State<StatefulWidget>>();
 
   MyHomePageState(this.api);
 
   @override
-  void initState() {
-    super.initState();
-    KubePlayerPlugin.listenEvents(startPlay: (trackInfoMap) {
-      print('event startPlay:$trackInfoMap');
-      setState(() {
-        this.trackInfoMap = trackInfoMap;
-        this.isPlaying = true;
-      });
-    }, stateChanged: (trackInfoMap, isPlaying) {
-      print('event stateChanged:$trackInfoMap');
-      setState(() {
-        this.trackInfoMap = trackInfoMap;
-        this.isPlaying = isPlaying;
-      });
-    }, stopPlay: () {
-      print('event stopPlay');
-      setState(() {
-        this.trackInfoMap = null;
-        this.isPlaying = false;
-      });
-    });
-//    KubePlayerPlugin.currentTrack();
-  }
-
-  @override
   Widget build(BuildContext context) => MultiNavigatorBottomBar(
         initTabIndex: _pageIndex,
-        tabs: tabs,
-        pageWidgetDecorator: (pageWidget) => Column(
+        tabs: <BottomBarTab>[
+          BottomBarTab(
+            initPage: FeaturedPage(
+              MyApp.openApi,
+              key: featuredKey,
+            ),
+            tabIconBuilder: (_) => Icon(Icons.whatshot),
+            tabTitleBuilder: (context) => Text(S.of(context).featured),
+          ),
+          BottomBarTab(
+            initPage: PlaylistPage(
+              MyApp.openApi,
+              key: playlistKey,
+            ),
+            tabIconBuilder: (_) => Icon(Icons.library_music),
+            tabTitleBuilder: (context) => Text(S.of(context).playlist),
+          ),
+        ],
+        pageWidgetDecorator: (pageWidget) =>
+            Column(
               children: <Widget>[
                 Expanded(child: pageWidget),
                 trackInfoMap != null
